@@ -1,5 +1,5 @@
 ### 주성분분석 ###
-setwd("")
+setwd("C:/Users/choir/R-Scripts/R-programming/Statistical Multivariate Analysis/")
 data = read.table("T5-1.DAT")
 data = as.data.frame(data)
 names(data) = c('Sweat', 'Sodium', 'Potassium')

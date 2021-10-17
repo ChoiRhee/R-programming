@@ -22,20 +22,18 @@ C3 = I3 - (1/3) * J3; C3
 # if span(v1, v2) = 0 then linearly dependent
 # if span(v2, v2) != 0 then linearly independent
 lin_dep.fun = function(r1, r2){r1*v1 + r2*v2}
-v1 = c(1, 2); v2 = c(2, 4)
+v1 = c(1, 0); v2 = c(0, 1)
 lin_dep.fun(0, 0)
 lin_dep.fun(1, 3)
 lin_dep.fun(-2, 0)
 
 ### rank of matrix ###
-install.packages("matrixcalc")
 library(matrixcalc)
 matrix.rank(A)
 matrix.rank(A+B)
 matrix.rank(A%*%B)
 
 ### Trace of a Matrix ###
-install.packages("matrixcalc")
 matrix.trace(A%*%B) == matrix.trace(B%*%A)
 
 ### Eigenvaluse & Eigenvectors ###
@@ -44,8 +42,10 @@ matrix.trace(A%*%B) == matrix.trace(B%*%A)
 eigen(A)
 eigen(A)$values
 eigen(A)$vectors # eigenvector는 scalar product하면 손으로 구한거랑 같아짐
+
 # 원래 eigen value 값을 구하려면 vector 원소에 제곱
 eigen(A)$vectors^2
+
 # A의 trace와 A의 eigen values의 합은 같음
 matrix.trace(A) == sum(eigen(A)$values)
 
@@ -56,7 +56,6 @@ prod(eigen(A)$values)
 ### Gram-Schmidt process of orthgonalization ###
 x1 = c(2, 0, 0); x2 = c(2, 2, 0); x3 = c(2, 0, 3)
 X = cbind(x1, x2, x3)
-install.packages("pracma")
 library(pracma)
 gramSchmidt(X)
 
@@ -79,16 +78,20 @@ sum(A%*%A - A)
 
 ### Decomposition of a matrix ###
 A = matrix(c(3, 5, 1, 5, 13, 0, 1, 0, 1), 3)
+
 # diag(λ_ii)
 D = diag(eigen(A)$values); D
+
 # eigen vectors
 p1 = eigen(A)$vectors[,1]
 p2 = eigen(A)$vectors[,2]
 p3 = eigen(A)$vectors[,3]
 P = cbind(p1, p2, p3); P
+
 # A = PΛt(P)
 A
 P%*%D%*%t(P)
+
 # A^-1 = PΛ^-1P^T
 solve(A)
 P%*%solve(D)%*%t(P)
@@ -98,10 +101,13 @@ A = matrix(c(1, 2, 3, 4), 2)
 B = matrix(c(2, 3, 4, 5), 2)
 C = matrix(c(4, 5, 6, 7), 2)
 D = matrix(c(4, 5, 6, 7), 2)
+
 # A⊗B
 kronecker(A, B)
+
 # (A⊗B)(C⊗D) = AC⊗BD
 sum(kronecker(A, B) %*% kronecker(C, D) - kronecker(A%*%C, B%*%D)) 
+
 # abT = a⊗bT = bT⊗a
 a = 1:3; b = 4:6
 all.equal(a%*%t(b), kronecker(a, t(b)), kronecker(t(b), a)) 

@@ -4,6 +4,7 @@
 # 3. Regress the standardized dependent variable on some principal components scores
 # 4. Back transform to origin variables
 
+setwd("C:/Users/choir/R-Scripts/R-programming/Statistical Multivariate Analysis/")
 data = read.table("slump_test.data", sep = ",", header = T)[,-1]
 # https://archive.ics.uci.edu/ml/datasets/Concrete+Slump+Test
 data = data.frame(X1 = data[,1], X2 = data[,2], X3 = data[,3], X4 = data[, 4], X5 = data[,5], X6 = data[,6], X7 = data[,7], Y = data[,10])
