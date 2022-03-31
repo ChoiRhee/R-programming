@@ -1,0 +1,66 @@
+# 1
+library(MASS)
+data(Cars93)
+
+q1 = Cars93$Manufacturer
+q1[which(q1 == 'Geo')] = NA
+q1[which(q1 == 'Saab')] = NA
+
+# 2
+q2 = substr(Cars93$Manufacturer, 2, 2)
+
+# 3
+q3 = Cars93$RPM
+q3[q3 < quantile(Cars93$RPM, 0.25) | q3 > quantile(Cars93$RPM, 0.75)] = NA
+
+# 4
+q4 = Cars93$Cylinders
+levels(q4)[levels(q4) == 'rotary'] = '7'
+
+# 5
+### 0으로 채워진 df 만들기
+q5 = Cars93$Manufacturer
+q5_df = data.frame(matrix(nrow = length(q5), ncol = length(unique(q5))))
+names(q5_df) = unique(q5)
+q5_df[is.na(q5_df)] = 0
+                   
+### 해당하는 자리 1로 바꾸기
+i = 1
+while(i <= length(q5)){
+ q5_df[i, as.character(q5[i])] = 1
+ i = i + 1
+}
+                   
+# 6
+### 6-1
+hist(Cars93$Price)
+### 6-2
+table(Cars93$AirBags)
+                   
+# 7
+q7 = c()
+i = 1
+while(i <= ncol(Cars93)){
+ if(is.numeric(Cars93[, i])){
+   q7 = c(q7, mean(Cars93[, i], na.rm = TRUE))
+   i = i + 1
+ } else{
+   i = i + 1
+ }
+}
+                   
+# 8
+### df 만들기
+q8 = data.frame(matrix(nrow = length(unique(Cars93$Manufacturer)), ncol = length(unique(Cars93$DriveTrain))))
+rownames(q8) = unique(Cars93$Manufacturer) # 행
+names(q8) = unique(Cars93$DriveTrain) # 열
+q8[is.na(q8)] = 0
+                   
+### 빈도 계산
+for(i in 1:length(Cars93$Manufacturer)){
+ for(d in unique(Cars93$DriveTrain)){
+   if(Cars93$DriveTrain[i] == d){
+     q8[as.character(Cars93$Manufacturer[i]), as.character(d)] = q8[Cars93$Manufacturer[i], d] + 1
+   }
+ }
+}
